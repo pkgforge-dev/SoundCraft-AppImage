@@ -1,0 +1,29 @@
+diff --git a/crates/ui-egui/src/updates_ui.rs b/crates/ui-egui/src/updates_ui.rs
+index 8fee933..b23bee5 100644
+--- a/crates/ui-egui/src/updates_ui.rs
++++ b/crates/ui-egui/src/updates_ui.rs
+@@ -40,20 +40,13 @@ impl Default for Runtime {
+ impl SoundApp {
+     /// Whether the app asks for a newer release when it starts (off until the desktop app turns it on).
+     #[cfg(not(target_arch = "wasm32"))]
+-    pub fn set_startup_update_check(&mut self, on: bool) {
+-        self.updates_rt.startup_check = on;
++    pub fn set_startup_update_check(&mut self, _on: bool) {
++        // The AppImage is updated by its own package manager; no check is ever asked for.
+     }
+ }
+ 
+-pub(crate) fn check(app: &mut SoundApp) {
+-    #[cfg(not(target_arch = "wasm32"))]
+-    {
+-        app.updates_rt.check_requested = true;
+-    }
+-    #[cfg(target_arch = "wasm32")]
+-    {
+-        app.updates_rt.manual_window_open = true;
+-    }
++pub(crate) fn check(_app: &mut SoundApp) {
++    // Help > Check for Updates would offer to replace this build with an upstream release.
+ }
+ 
+ pub(crate) fn tick(app: &mut SoundApp, ctx: &egui::Context) {
